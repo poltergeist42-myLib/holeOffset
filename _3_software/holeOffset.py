@@ -80,8 +80,8 @@ class C_HoleOffset( object ) :
         self.v_fileFormat       = ".drl"
         self.v_file             = ''
         self.v_fileName         = ''
-        self.v_offsetFile       = ''
-        self.v_offsetFileName   = ''
+        self._v_offsetFileFQFN  = ''
+        self._v_offsetFileName  = ''
         self.v_xOffset          = 0.0
         self.v_yOffset          = 0.0
         self.v_segmentOA        = 0.0
@@ -114,14 +114,6 @@ class C_HoleOffset( object ) :
               
 ####
 
-    def f_setOffsetFileName(self, v_fileName) :
-        """ Permet de créer le nom du nouveau fichier de perçage """
-        self.v_offsetFileName = "offset_{}".format( v_fileName )
-        self.v_offsetFile = os.path.join(self.v_dir, self.v_offsetFileName)
-        return self.v_offsetFile
-        
-####
-
     def f_setOffset(self, v_xOffset=0, v_yOffset=0) :
         """ renseigne les varriables de class : v_xOffset et v_yOffset """
         if (not self.v_xOffset) and (not self.v_yOffset) :
@@ -152,9 +144,15 @@ class C_HoleOffset( object ) :
         """
         return self.v_segmentOA, self.v_segmentAB
     
-    def f_setNewDrlFile(self, v_file) :
-        """ Parcour le fichier de perçage en créant un second fichier contenant les
+    def f_setNewDrlFile(self, v_fileToParse, v_newDrlFile) :
+        """ Parcour le fichier de perçage et renseigne un second fichier contenant les
             nouvelles coordonées des troues
+            
+            - 'v_fileToParse' doit représenter un fichier texte ouvert en mode lecture
+              ('r'). C'est le fichier qui doit être parcouru pour récupérer les informations de perçage.
+              
+            - 'v_newDrlFile' doit représenter un fichier texte ouvert en mode ajout de
+              texte ('a'). C'est le fichier recevra les nouvelles informations de perçage.
         """
         ## dbg
         v_dbg = 1
@@ -166,56 +164,25 @@ class C_HoleOffset( object ) :
         v_yIndex = 0
         v_xChaine = 'X'
         v_yChaine = 'Y'
-        v_newDrlFileName = self.f_setOffsetFileName(self.v_fileName)
+        for v_line in v_fileToParse : 
+            v_xValue = 0.0
+            v_yValue = 0.0
+            if (not v_xChaine in v_line) or (not v_yChaine in v_line) :
+                v_newDrlFile.write( v_line )
 
-        # v_showVal = ''
-        # v_count = 1
-        v_chk = True      
-        try :
-            v_drlParse = open(v_file, 'r')
-            v_chkWr = True
-            try :
-                os.remove( v_newDrlFileName )               
-                v_wrDrl = open(v_newDrlFileName, 'a')
-            
-                for v_line in v_drlParse : 
-                    v_xValue = 0.0
-                    v_yValue = 0.0
-                    if (not v_xChaine in v_line) or (not v_yChaine in v_line) :
-                        v_wrDrl.write( v_line )
-                        # v_showVal = v_line
-                    else :
-                        if (v_xChaine in v_line) and (v_yChaine in v_line) :
-                            for i in range( len(v_line) ) :
-                                if v_line[i] == v_xChaine :
-                                    v_xIndex = i              
-                                if v_line[i] == v_yChaine :
-                                    v_yIndex = i
-                                    v_xValue = eval(v_line[v_xIndex+1:v_yIndex])
-                                    v_yValue = eval(v_line[v_yIndex+1:])
-                                        
-                    if v_xValue or v_yValue :
-                        v_wrDrl.write(self.f_setOffsetToHole(v_xValue, v_yValue))
-                        # v_showVal = self.f_setOffsetToHole(v_xValue, v_yValue)
-                        
-                    # print("{} - {} --> {}".format(v_count, v_line, v_showVal))
-                    # v_count += 1
-                    
-        
-            except FileNotFoundError :
-                print("fichier : {} --> non trouve".format(v_wrDrl))
-                v_chkWr = False               
+            else :
+                if (v_xChaine in v_line) and (v_yChaine in v_line) :
+                    for i in range( len(v_line) ) :
+                        if v_line[i] == v_xChaine :
+                            v_xIndex = i              
+                        if v_line[i] == v_yChaine :
+                            v_yIndex = i
+                            v_xValue = eval(v_line[v_xIndex+1:v_yIndex])
+                            v_yValue = eval(v_line[v_yIndex+1:])
+                                
+            if v_xValue or v_yValue :
+                v_newDrlFile.write(self.f_setOffsetToHole(v_xValue, v_yValue))
 
-            finally :
-                if v_chkWr : v_wrDrl.close()
-         
-        except FileNotFoundError :
-            print("fichier : {} --> non trouve".format(v_drlParse))
-            v_chk = False           
-
-        finally :
-            if v_chk : v_drlParse.close()
-    
 ####
 
 ## Accessoires
