@@ -78,31 +78,27 @@ le PCB. Ce programme est extrait du projet : Trouilloteuse</p>
 <p>Pour aider à la compréhension de mon organisation, voici un bref déscrptif de
 l’arborescence de se projet.Cette arborescence est à reproduire si vous récupérez ce dépôt
 depuis GitHub.</p>
-<p>openFile               # Dossier racine du projet (non versionner)
-|
-+–project             # (branch master) contient l’ensemble du projet en lui même
-|  |
-|  +–_1_userDoc       # Contien toute la documentation relative au projet
-|  |   |
-|  |   –source       # Dossier réunissant les sources utilisées par Sphinx
-|  |
-|  +–_2_modelisation  # contien tous les plans et toutes les modélisations du projet
-|  |
-|  +–_3_software      # Contien toute la partie programmation du projet
-|  |
-|  –_4_PCB           # Contient toutes les parties des circuits imprimés (routage,
-|                      # implantation, typon, fichier de perçage, etc
-|
-–webDoc              # Dossier racine de la documentation qui doit être publiée</p>
-<blockquote>
-<div><div class="line-block">
-<div class="line"><br /></div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">openFile</span>               <span class="c1"># Dossier racine du projet (non versionner)</span>
+<span class="o">|</span>
+<span class="o">+--</span><span class="n">project</span>             <span class="c1"># (branch master) contient l&#39;ensemble du projet en lui même</span>
+<span class="o">|</span>  <span class="o">|</span>
+<span class="o">|</span>  <span class="o">+--</span><span class="n">_1_userDoc</span>       <span class="c1"># Contien toute la documentation relative au projet</span>
+<span class="o">|</span>  <span class="o">|</span>   <span class="o">|</span>
+<span class="o">|</span>  <span class="o">|</span>   \<span class="o">--</span><span class="n">source</span>       <span class="c1"># Dossier réunissant les sources utilisées par Sphinx</span>
+<span class="o">|</span>  <span class="o">|</span>
+<span class="o">|</span>  <span class="o">+--</span><span class="n">_2_modelisation</span>  <span class="c1"># contien tous les plans et toutes les modélisations du projet</span>
+<span class="o">|</span>  <span class="o">|</span>
+<span class="o">|</span>  <span class="o">+--</span><span class="n">_3_software</span>      <span class="c1"># Contien toute la partie programmation du projet</span>
+<span class="o">|</span>  <span class="o">|</span>
+<span class="o">|</span>  \<span class="o">--</span><span class="n">_4_PCB</span>           <span class="c1"># Contient toutes les parties des circuits imprimés (routage,</span>
+<span class="o">|</span>                      <span class="c1"># implantation, typon, fichier de perçage, etc</span>
+<span class="o">|</span>
+\<span class="o">--</span><span class="n">webDoc</span>              <span class="c1"># Dossier racine de la documentation qui doit être publiée</span>
+   <span class="o">|</span>
+   \<span class="o">--</span><span class="n">html</span>             <span class="c1"># (branch gh-pages) C&#39;est dans se dosier que Sphinx vat</span>
+                       <span class="c1"># générer la documentation à publié sur internet</span>
+</pre></div>
 </div>
-<dl class="docutils">
-<dt>–html             # (branch gh-pages) C’est dans se dosier que Sphinx vat</dt>
-<dd># générer la documentation à publié sur internet</dd>
-</dl>
-</div></blockquote>
 </div>
 </div>
 
