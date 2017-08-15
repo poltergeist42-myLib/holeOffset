@@ -1,5 +1,5 @@
-===============
-README_openFile
-===============
+======
+README
+======
 
 .. include:: ../../README.rst
