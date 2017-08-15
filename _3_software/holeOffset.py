@@ -6,10 +6,10 @@
 Infos
 =====
 
-   :Projet:             
+   :Projet:             holeOffset
    :Nom du fichier:     holeOffset.py
    :Autheur:            `Poltergeist42 <https://github.com/poltergeist42>`_
-   :Version:            20170811
+   :Version:            20170815
 
 ####
 
@@ -52,7 +52,9 @@ lexique
 """
 from __future__ import absolute_import
 import os, sys
-sys.path.insert(0,'..')         # ajouter le repertoire precedent au path (non définitif)
+sys.path.insert(0,'..')         # ajouter le repertoire precedent au path
+                                # (Cette action n'est pas inscrit dans la variable %PATH%
+                                # du systèmes. cette opération est donc temporaire)
                                 # pour pouvoir importer les modules et paquets parent
 try :
     from devChk.devChk import C_DebugMsg
@@ -86,6 +88,9 @@ class C_HoleOffset( object ) :
         self.v_yOffset          = 0.0
         self.v_segmentOA        = 0.0
         self.v_segmentAB        = 0.0
+        self._v_offsetRad       = 0.0
+        self._v_offsetDeg       = 0.0
+        
         
 ####
         
@@ -114,20 +119,50 @@ class C_HoleOffset( object ) :
               
 ####
 
-    def f_setOffset(self, v_xOffset=0, v_yOffset=0) :
-        """ renseigne les varriables de class : v_xOffset et v_yOffset """
-        if (not self.v_xOffset) and (not self.v_yOffset) :
-            if v_xOffset :
-                self.v_xOffset = v_xOffset
-            
-            if v_yOffset :
-                self.v_yOffset = v_yOffset
+    def f_setOffset(self, v_hRef, v_decallageY) :
+        """ Permet de calculer l'angle de décallage à appliquer sur chacun des trous.
+        
+            :v_hRef:        correspond au segmentOA. Cette valleur doit être relevée
+                            depuis le logiciel de CIAO
+                        
+            :v_decallageY:  Cette valleur doit être mesurée directement par l'appareil
+        """
+        self._v_offsetRad = asin(v_decallageY/v_hRef)
+        self._v_offsetDeg = degrees(angXh)
 
 ####
 
-    def f_setOffsetToHole(self, v_xValue, v_yValue) :
-        """ Applique l'offset sur le coordonées X et Y de chacun des troues """
-        return "X{}Y{}\n".format(v_xValue + self.v_xOffset, v_yValue + self.v_yOffset)
+    def f_getOffsetRad(self) :
+        """ Retourne l'angle de décallage en radian """
+        return self._v_offsetRad
+        
+####
+
+    def f_getOffsetDeg(self) :
+        """ Retourne l'angle de décallage en Degrès """
+        return self._v_offsetDeg
+
+####
+
+    def f_setOffsetToHole(self, v_x, v_y, v_delta=self._v_offsetRad) :
+        """ Applique l'offset sur le coordonées X et Y de chacun des troues
+            
+            :v_x:   valeur de 'x' lue dans le fichier de perçage
+            :v_y:   valeur de 'y' lue dans le fichier de perçage
+            :v_delta:   angle de décallage (_v_offsetRad)
+        """
+            v_h = hypot(v_x, v_y)
+            v_xh = acos(v_x/v_h)
+            v_xhDelta = v_xh + v_delta
+            v_xDelta = v_h*cos(v_xhDelta)
+            v_yDelta = v_h*sin(v_xhDelta)
+            
+            arrondie = 3
+            
+            return  (
+                        round(v_xDelta, arrondie),
+                        round(v_yDelta, arrondie)
+                    )
 
 ####
 
@@ -181,7 +216,8 @@ class C_HoleOffset( object ) :
                             v_yValue = eval(v_line[v_yIndex+1:])
                                 
             if v_xValue or v_yValue :
-                v_newDrlFile.write(self.f_setOffsetToHole(v_xValue, v_yValue))
+                v_xValue, v_yValue = self.f_setOffsetToHole(v_xValue, v_yValue)
+                v_newDrlFile.write(f"X{v_xValue}Y{v_yValue}\n")
 
 ####
 
