@@ -9,7 +9,7 @@ Infos
    :Projet:             holeOffset
    :Nom du fichier:     holeOffset.py
    :Autheur:            `Poltergeist42 <https://github.com/poltergeist42>`_
-   :Version:            20170815
+   :Version:            20170816
 
 ####
 
@@ -66,6 +66,7 @@ except ImportError :
     v_dbgChk = False
 
 import argparse
+from math import degrees, cos, acos, hypot, sin, asin, fabs
 
 class C_HoleOffset( object ) :
     """ permet de parcourrir un fichier perçage de logiciel de CIAO et de corriger les
@@ -144,25 +145,27 @@ class C_HoleOffset( object ) :
 
 ####
 
-    def f_setOffsetToHole(self, v_x, v_y, v_delta=self._v_offsetRad) :
+    def f_setOffsetToHole(self, v_x, v_y, v_delta=0) :
         """ Applique l'offset sur le coordonées X et Y de chacun des troues
             
             :v_x:   valeur de 'x' lue dans le fichier de perçage
             :v_y:   valeur de 'y' lue dans le fichier de perçage
             :v_delta:   angle de décallage (_v_offsetRad)
         """
-            v_h = hypot(v_x, v_y)
-            v_xh = acos(v_x/v_h)
-            v_xhDelta = v_xh + v_delta
-            v_xDelta = v_h*cos(v_xhDelta)
-            v_yDelta = v_h*sin(v_xhDelta)
-            
-            arrondie = 3
-            
-            return  (
-                        round(v_xDelta, arrondie),
-                        round(v_yDelta, arrondie)
-                    )
+        if not v_delta :
+            v_delta = self.f_getOffsetRad()
+        v_h = hypot(v_x, v_y)
+        v_xh = acos(v_x/v_h)
+        v_xhDelta = v_xh + v_delta
+        v_xDelta = v_h*cos(v_xhDelta)
+        v_yDelta = v_h*sin(v_xhDelta)
+        
+        arrondie = 3
+        
+        return  (
+                    round(v_xDelta, arrondie),
+                    round(v_yDelta, arrondie)
+                )
 
 ####
 
@@ -217,7 +220,8 @@ class C_HoleOffset( object ) :
                                 
             if v_xValue or v_yValue :
                 v_xValue, v_yValue = self.f_setOffsetToHole(v_xValue, v_yValue)
-                v_newDrlFile.write(f"X{v_xValue}Y{v_yValue}\n")
+                v_newXY = "X{}Y{}\n".format(v_xValue, v_yValue)
+                v_newDrlFile.write(v_newXY)
 
 ####
 
