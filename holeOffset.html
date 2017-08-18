@@ -60,7 +60,7 @@
 </tr>
 <tr class="field-odd field"><th class="field-name">Autheur:</th><td class="field-body"><a class="reference external" href="https://github.com/poltergeist42">Poltergeist42</a></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Version:</th><td class="field-body">20170816</td>
+<tr class="field-even field"><th class="field-name">Version:</th><td class="field-body">20170818</td>
 </tr>
 </tbody>
 </table>
@@ -144,10 +144,22 @@ des trous en fonction des repères identifiés sur le PCB.</td>
 <dd><p>permet de parcourrir un fichier perçage de logiciel de CIAO et de corriger les
 coordonées de chacun des trous en fonction des repères identifiés sur le PCB.</p>
 <dl class="method">
+<dt id="_3_software.holeOffset.C_HoleOffset.f_getFileToParse">
+<code class="descname">f_getFileToParse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_3_software.holeOffset.C_HoleOffset.f_getFileToParse" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>&nbsp;» Retourne le nom du fichier à parcourrir</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="_3_software.holeOffset.C_HoleOffset.f_getMireDimension">
-<code class="descname">f_getMireDimension</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_3_software.holeOffset.C_HoleOffset.f_getMireDimension" title="Lien permanent vers cette définition">¶</a></dt>
-<dd><p>retourne la distance entre l’origine et la mire A (segmentOA) et la
+<code class="descname">f_getMireDimension</code><span class="sig-paren">(</span><em>v_segmentOA=None</em>, <em>v_segmentAB=None</em><span class="sig-paren">)</span><a class="headerlink" href="#_3_software.holeOffset.C_HoleOffset.f_getMireDimension" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>retourne la distance entre l’Origine et la mire A (segmentOA) et la
 distance entre la mire A et la mire B (segmentAB)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="_3_software.holeOffset.C_HoleOffset.f_getNewDrlFN">
+<code class="descname">f_getNewDrlFN</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_3_software.holeOffset.C_HoleOffset.f_getNewDrlFN" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>retourne le nom du nouveau fichier</p>
 </dd></dl>
 
 <dl class="method">
@@ -163,6 +175,12 @@ distance entre la mire A et la mire B (segmentAB)</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="_3_software.holeOffset.C_HoleOffset.f_setFileToParse">
+<code class="descname">f_setFileToParse</code><span class="sig-paren">(</span><em>v_fileToParse</em><span class="sig-paren">)</span><a class="headerlink" href="#_3_software.holeOffset.C_HoleOffset.f_setFileToParse" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Permet de définir le nom du fichier source à parcourir</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="_3_software.holeOffset.C_HoleOffset.f_setMireDimension">
 <code class="descname">f_setMireDimension</code><span class="sig-paren">(</span><em>v_segmentOA</em>, <em>v_segmentAB</em><span class="sig-paren">)</span><a class="headerlink" href="#_3_software.holeOffset.C_HoleOffset.f_setMireDimension" title="Lien permanent vers cette définition">¶</a></dt>
 <dd><p>Permet de fixer la distance entre l’origine et la mire A (segmentOA) et la
@@ -170,8 +188,14 @@ distance entre la mire A et la mire B (segmentAB)</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="_3_software.holeOffset.C_HoleOffset.f_setNewDrlFN">
+<code class="descname">f_setNewDrlFN</code><span class="sig-paren">(</span><em>v_newDrlFN</em><span class="sig-paren">)</span><a class="headerlink" href="#_3_software.holeOffset.C_HoleOffset.f_setNewDrlFN" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Permet de définir le nom du nouveau fichier qui sera générer</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="_3_software.holeOffset.C_HoleOffset.f_setNewDrlFile">
-<code class="descname">f_setNewDrlFile</code><span class="sig-paren">(</span><em>v_fileToParse</em>, <em>v_newDrlFile</em><span class="sig-paren">)</span><a class="headerlink" href="#_3_software.holeOffset.C_HoleOffset.f_setNewDrlFile" title="Lien permanent vers cette définition">¶</a></dt>
+<code class="descname">f_setNewDrlFile</code><span class="sig-paren">(</span><em>v_fileToParse=None</em>, <em>v_newDrlFN=None</em><span class="sig-paren">)</span><a class="headerlink" href="#_3_software.holeOffset.C_HoleOffset.f_setNewDrlFile" title="Lien permanent vers cette définition">¶</a></dt>
 <dd><p>Parcour le fichier de perçage et renseigne un second fichier contenant les
 nouvelles coordonées des troues</p>
 <ul class="simple">
@@ -184,7 +208,7 @@ texte (“a”). C’est le fichier recevra les nouvelles informations de perça
 
 <dl class="method">
 <dt id="_3_software.holeOffset.C_HoleOffset.f_setOffset">
-<code class="descname">f_setOffset</code><span class="sig-paren">(</span><em>v_hRef</em>, <em>v_decallageY</em><span class="sig-paren">)</span><a class="headerlink" href="#_3_software.holeOffset.C_HoleOffset.f_setOffset" title="Lien permanent vers cette définition">¶</a></dt>
+<code class="descname">f_setOffset</code><span class="sig-paren">(</span><em>v_decallageY</em>, <em>v_hRef=None</em><span class="sig-paren">)</span><a class="headerlink" href="#_3_software.holeOffset.C_HoleOffset.f_setOffset" title="Lien permanent vers cette définition">¶</a></dt>
 <dd><p>Permet de calculer l’angle de décallage à appliquer sur chacun des trous.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
